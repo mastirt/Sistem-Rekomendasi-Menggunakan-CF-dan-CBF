@@ -170,6 +170,7 @@ Pendekatan Collaborative Filtering menggunakan data interaksi pengguna (misalnya
 Sistem rekomendasi ini menyajikan **Top-10 Recommendations** bagi setiap pengguna:
 1. **Content-Based Filtering**: Rekomendasi dihasilkan dengan melihat kemiripan antar buku berdasarkan penulis.
 ### Get Recommendations for Similar Book Titles
+**Input Judul**: Entering the Silence : Becoming a Monk and a Writer (The Journals of Thomas Merton, V. 2)
 
 | Book Title                                                                                     | Book Author    |
 |------------------------------------------------------------------------------------------------|----------------|
@@ -184,6 +185,8 @@ Sistem rekomendasi ini menyajikan **Top-10 Recommendations** bagi setiap penggun
 
 2. **Collaborative Filtering**: Rekomendasi dihasilkan berdasarkan preferensi pengguna dan pola rating di seluruh pengguna.
 ### Top 10 Book Recommendations
+
+**Input User-ID**: 276725
 
 | Book Title                                              | Book Author            |
 |---------------------------------------------------------|-------------------------|
