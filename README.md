@@ -104,7 +104,6 @@ Dataset ini memiliki nilai kosong pada beberapa kolom seperti *Book-Author*, *Pu
 
 ### Top 10 Penulis Dengan Buku Terbanyak
 Melihat 10 penulis dengan jumlah buku terbanyak. ![Top10](https://github.com/user-attachments/assets/252cd85c-08b9-453c-9a37-0a43387c564a)
-)
 
 ## Data Preparation
 Pada bagian ini, dijelaskan tahapan-tahapan persiapan data yang dilakukan untuk memastikan data siap digunakan dalam proses pemodelan sistem rekomendasi. Berikut adalah tahapan lengkap dalam *Data Preparation*:
