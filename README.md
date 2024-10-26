@@ -108,31 +108,35 @@ Melihat 10 penulis dengan jumlah buku terbanyak. ![Top10](https://github.com/use
 ## Data Preparation
 Pada bagian ini, dijelaskan tahapan-tahapan persiapan data yang dilakukan untuk memastikan data siap digunakan dalam proses pemodelan sistem rekomendasi. Berikut adalah tahapan lengkap dalam *Data Preparation*:
 
-### 1. Merging Files and Determining the Total Number of Ratings
+### 1. Data Cleaninng - Menghapus Kolom yang Tidak Valid
+   - **Proses**: Menghapus data tahun publikasi yang tidak valid (DK Publishing Inc dan Gallimard), Mengubah tipe data 'Year-Of-Publication' menjadi integer dan Menghapus kolom Image-URL yang tidak diperlukan
+   - **Alasan**: Data yang tidak relevan dapat mempengaruhi performa model rekomendasi karena data yang tidak berpengaruh pada hasil rekomendasi.
+
+### 2. Merging Files and Determining the Total Number of Ratings
    - **Proses**: Menggabungkan dataframe `ratings` dengan dataframe `books` berdasarkan kolom `ISBN`. Setelah digabung, dilakukan agregasi jumlah rating untuk setiap ISBN.
    - **Alasan**: Penggabungan ini penting untuk menyediakan informasi lengkap mengenai buku, seperti judul, penulis, tahun terbit, dan penerbit. Dengan demikian, setiap data rating dapat langsung terkait dengan detail buku, yang akan berguna dalam model rekomendasi.
 
-### 2. Data Preparation untuk Model Content-Based Filtering
+### 3. Data Preparation untuk Model Content-Based Filtering
 
    #### a. Data Cleaning - Handling Missing Values
-      - **Proses**: Menghapus data yang memiliki nilai kosong pada kolom `Book-Title`, `Book-Author`, `Year-Of-Publication`, dan `Publisher`.
-      - **Alasan**: Nilai kosong dapat memengaruhi performa model rekomendasi karena mengurangi kelengkapan informasi buku. Dengan menghapus data yang kosong, kita dapat memastikan bahwa setiap buku dalam dataset memiliki informasi lengkap.
+   - **Proses**: Menghapus data yang memiliki nilai kosong pada kolom `Book-Title`, `Book-Author`, `Year-Of-Publication`, dan `Publisher`.
+   - **Alasan**: Nilai kosong dapat memengaruhi performa model rekomendasi karena mengurangi kelengkapan informasi buku. Dengan menghapus data yang kosong, kita dapat memastikan bahwa setiap buku dalam dataset memiliki informasi lengkap.
 
    #### b. Standardizing Book Types Based on ISBN
-      - **Proses**: Mengurutkan buku berdasarkan ISBN dan menghapus duplikasi ISBN agar setiap ISBN hanya muncul satu kali.
-      - **Alasan**: Dengan menyimpan setiap ISBN sebagai nilai unik, kita dapat menjaga konsistensi dan memastikan setiap buku dalam dataset memiliki identitas yang unik, yang penting untuk proses pemetaan data pada sistem rekomendasi.
+   - **Proses**: Mengurutkan buku berdasarkan ISBN dan menghapus duplikasi ISBN agar setiap ISBN hanya muncul satu kali.
+   - **Alasan**: Dengan menyimpan setiap ISBN sebagai nilai unik, kita dapat menjaga konsistensi dan memastikan setiap buku dalam dataset memiliki identitas yang unik, yang penting untuk proses pemetaan data pada sistem rekomendasi.
 
    #### c. TF-IDF (Term Frequency-Inverse Document Frequency)
-      - **Proses**: Teknik ini digunakan untuk menghitung representasi bobot fitur `book_author`. Hasil perhitungan disimpan dalam bentuk matriks TF-IDF, yang berfungsi sebagai representasi vektor penulis buku.
-      - **Alasan**: TF-IDF membantu model untuk memahami seberapa penting kata-kata tertentu dalam konteks penulis buku dengan menyeimbangkan frekuensi umum dan khusus suatu kata. Ini memperkuat kontribusi kata-kata unik yang dapat meningkatkan kualitas rekomendasi berdasarkan kesamaan konten antar-buku.
+   - **Proses**: Teknik ini digunakan untuk menghitung representasi bobot fitur `book_author`. Hasil perhitungan disimpan dalam bentuk matriks TF-IDF, yang berfungsi sebagai representasi vektor penulis buku.
+   - **Alasan**: TF-IDF membantu model untuk memahami seberapa penting kata-kata tertentu dalam konteks penulis buku dengan menyeimbangkan frekuensi umum dan khusus suatu kata. Ini memperkuat kontribusi kata-kata unik yang dapat meningkatkan kualitas rekomendasi berdasarkan kesamaan konten antar-buku.
 
-### 3. Data Preparation untuk Model Collaborative Filtering
+### 4. Data Preparation untuk Model Collaborative Filtering
    #### a. Encoding dengan Label Encoding
-      - **Proses**: Mengonversi data pada kolom `User-ID` dan `ISBN` menjadi nilai numerik unik menggunakan encoding, sehingga setiap `User-ID` dan `ISBN` memiliki representasi numerik yang berbeda.
-      - **Alasan**: Encoding diperlukan agar data dapat diproses oleh model secara efisien. Dengan mengubah kolom ID menjadi numerik, kita dapat menggunakan data ini dalam model collaborative filtering tanpa kendala pada format data non-numerik.
+   - **Proses**: Mengonversi data pada kolom `User-ID` dan `ISBN` menjadi nilai numerik unik menggunakan encoding, sehingga setiap `User-ID` dan `ISBN` memiliki representasi numerik yang berbeda.
+   - **Alasan**: Encoding diperlukan agar data dapat diproses oleh model secara efisien. Dengan mengubah kolom ID menjadi numerik, kita dapat menggunakan data ini dalam model collaborative filtering tanpa kendala pada format data non-numerik.
    #### b. Data Splitting
-      - **Proses**: Memisahkan data menjadi data latih dan data validasi untuk mengevaluasi performa model sebesar 90% data latih dan 10% data validasi.
-      - **Alasan**: Pembagian data ini penting untuk menguji generalisasi model. Dengan membagi data latih dan validasi, kita dapat menilai kemampuan model dalam memberikan rekomendasi pada data yang tidak terlihat sebelumnya, menghindari overfitting, dan memastikan bahwa model dapat bekerja baik pada data baru.
+   - **Proses**: Memisahkan data menjadi data latih dan data validasi untuk mengevaluasi performa model sebesar 90% data latih dan 10% data validasi.
+   - **Alasan**: Pembagian data ini penting untuk menguji generalisasi model. Dengan membagi data latih dan validasi, kita dapat menilai kemampuan model dalam memberikan rekomendasi pada data yang tidak terlihat sebelumnya, menghindari overfitting, dan memastikan bahwa model dapat bekerja baik pada data baru.
 
 
 ## Modeling
@@ -157,6 +161,16 @@ Content-Based Filtering menggunakan informasi detail buku, seperti nama penulis,
 Pendekatan Collaborative Filtering menggunakan data interaksi pengguna (misalnya, rating) untuk membuat rekomendasi. Proses yang digunakan dalam model ini meliputi:
 - **Neural Collaborative Filtering (NCF)**: Model rekomendasi berbasis jaringan saraf yang memetakan pengguna dan buku ke dalam ruang embedding untuk memprediksi rating yang belum ada.
 - **Top-N Recommendation**: Berdasarkan skor prediksi tertinggi, model memberikan rekomendasi buku untuk pengguna.
+
+### Cara Kerja Model RecommenderNet
+*RecommenderNet* adalah model jaringan saraf sederhana yang digunakan untuk memprediksi interaksi pengguna-buku dalam sistem rekomendasi berbasis Collaborative Filtering. Model ini menggunakan lapisan embedding untuk memetakan pengguna dan buku ke dalam ruang vektor berdimensi rendah, kemudian menggunakan operasi perkalian dot product untuk menilai kecocokan antara pengguna dan buku. Hasil perkalian ini memberikan skor prediksi, yang akan dinormalisasi dengan fungsi aktivasi *sigmoid*.
+
+### Parameter dan Value
+Berikut penjelasan mengenai parameter utama dalam model *RecommenderNet* dan nilai yang digunakan dalam eksperimen ini:
+- **num_users**: 2180. Menentukan jumlah unik pengguna dalam dataset, yang kemudian digunakan sebagai ukuran input untuk layer embedding pengguna.
+- **num_book_title**: 17178. Menentukan jumlah unik buku dalam dataset, yang digunakan sebagai ukuran input untuk layer embedding buku.
+- **embedding_size**: 50. Menentukan dimensi vektor embedding untuk pengguna dan buku. Dengan nilai 50, setiap pengguna dan buku direpresentasikan dalam ruang embedding 50 dimensi.
+- **dropout_rate**: 0.2. Tingkat dropout digunakan pada vektor embedding pengguna dan buku untuk mengurangi overfitting, terutama jika data pelatihan tidak terlalu besar.
 
 #### Kelebihan
 - **Eksplorasi rekomendasi yang lebih luas**: Pengguna dapat menerima rekomendasi yang beragam karena sistem mempertimbangkan preferensi pengguna lain dengan kesamaan pola.
