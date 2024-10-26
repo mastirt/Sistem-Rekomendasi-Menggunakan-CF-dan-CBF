@@ -103,7 +103,8 @@ Berikut ini adalah jumlah nilai kosong (*missing values*) pada setiap kolom dala
 Dataset ini memiliki nilai kosong pada beberapa kolom seperti *Book-Author*, *Publisher*, *Image-URL-L*, dan *Age*, yang mungkin memerlukan penanganan lebih lanjut seperti imputasi atau penghapusan baris/kolom tergantung pada strategi pengolahan data yang diinginkan.
 
 ### Top 10 Penulis Dengan Buku Terbanyak
-Melihat 10 penulis dengan jumlah buku terbanyak. ![Top 10 Penulis](/assets/KorelasiMatrik.png)
+Melihat 10 penulis dengan jumlah buku terbanyak. ![Top 10 Penulis](![Top10](https://github.com/user-attachments/assets/252cd85c-08b9-453c-9a37-0a43387c564a)
+)
 
 ## Data Preparation
 Pada bagian ini, dijelaskan tahapan-tahapan persiapan data yang dilakukan untuk memastikan data siap digunakan dalam proses pemodelan sistem rekomendasi. Berikut adalah tahapan lengkap dalam *Data Preparation*:
@@ -244,7 +245,8 @@ Hasil ini menunjukkan bahwa model sangat efektif dalam memberikan rekomendasi be
 ## Collaborative Filtering
 Untuk model collaborative filtering, performa diukur menggunakan RMSE yang ditunjukkan dalam grafik berikut:
 
-![Grafik RMSE](link_ke_grafik_di_sini)
+![RMSE](https://github.com/user-attachments/assets/04aa3ddd-09a5-4032-9d89-c041e9bf75a3)
+
 
 Grafik di atas menunjukkan:
 
