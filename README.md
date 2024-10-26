@@ -112,25 +112,28 @@ Pada bagian ini, dijelaskan tahapan-tahapan persiapan data yang dilakukan untuk 
    - **Proses**: Menggabungkan dataframe `ratings` dengan dataframe `books` berdasarkan kolom `ISBN`. Setelah digabung, dilakukan agregasi jumlah rating untuk setiap ISBN.
    - **Alasan**: Penggabungan ini penting untuk menyediakan informasi lengkap mengenai buku, seperti judul, penulis, tahun terbit, dan penerbit. Dengan demikian, setiap data rating dapat langsung terkait dengan detail buku, yang akan berguna dalam model rekomendasi.
 
-### 2. Data Cleaning - Handling Missing Values
-   - **Proses**: Menghapus data yang memiliki nilai kosong pada kolom `Book-Title`, `Book-Author`, `Year-Of-Publication`, dan `Publisher`.
-   - **Alasan**: Nilai kosong dapat memengaruhi performa model rekomendasi karena mengurangi kelengkapan informasi buku. Dengan menghapus data yang kosong, kita dapat memastikan bahwa setiap buku dalam dataset memiliki informasi lengkap.
+### 2. Data Preparation untuk Model Content-Based Filtering
 
-### 3. Standardizing Book Types Based on ISBN
-   - **Proses**: Mengurutkan buku berdasarkan ISBN dan menghapus duplikasi ISBN agar setiap ISBN hanya muncul satu kali.
-   - **Alasan**: Dengan menyimpan setiap ISBN sebagai nilai unik, kita dapat menjaga konsistensi dan memastikan setiap buku dalam dataset memiliki identitas yang unik, yang penting untuk proses pemetaan data pada sistem rekomendasi.
+   #### a. Data Cleaning - Handling Missing Values
+      - **Proses**: Menghapus data yang memiliki nilai kosong pada kolom `Book-Title`, `Book-Author`, `Year-Of-Publication`, dan `Publisher`.
+      - **Alasan**: Nilai kosong dapat memengaruhi performa model rekomendasi karena mengurangi kelengkapan informasi buku. Dengan menghapus data yang kosong, kita dapat memastikan bahwa setiap buku dalam dataset memiliki informasi lengkap.
 
-### 4. Encoding dengan Label Encoding
-   - **Proses**: Mengonversi data pada kolom `User-ID` dan `ISBN` menjadi nilai numerik unik menggunakan encoding, sehingga setiap `User-ID` dan `ISBN` memiliki representasi numerik yang berbeda.
-   - **Alasan**: Encoding diperlukan agar data dapat diproses oleh model secara efisien. Dengan mengubah kolom ID menjadi numerik, kita dapat menggunakan data ini dalam model collaborative filtering tanpa kendala pada format data non-numerik.
+   #### b. Standardizing Book Types Based on ISBN
+      - **Proses**: Mengurutkan buku berdasarkan ISBN dan menghapus duplikasi ISBN agar setiap ISBN hanya muncul satu kali.
+      - **Alasan**: Dengan menyimpan setiap ISBN sebagai nilai unik, kita dapat menjaga konsistensi dan memastikan setiap buku dalam dataset memiliki identitas yang unik, yang penting untuk proses pemetaan data pada sistem rekomendasi.
 
-### 5. Data Preparation untuk Model Content-Based Filtering
-   - **Proses**: Membuat dataframe baru `books_new` dengan kolom-kolom utama seperti `ISBN`, `Book-Title`, `Book-Author`, `Year-Of-Publication`, dan `Publisher`, serta mengonversi setiap kolom ke dalam bentuk list untuk keperluan manipulasi data pada model content-based filtering.
-   - **Alasan**: Model content-based filtering membutuhkan informasi detail buku untuk menentukan kesamaan antar buku. Dengan mengorganisir data ke dalam bentuk list, proses pencocokan data berdasarkan fitur buku dapat dilakukan dengan lebih mudah.
+   #### c. TF-IDF (Term Frequency-Inverse Document Frequency)
+      - **Proses**: Teknik ini digunakan untuk menghitung representasi bobot fitur `book_author`. Hasil perhitungan disimpan dalam bentuk matriks TF-IDF, yang berfungsi sebagai representasi vektor penulis buku.
+      - **Alasan**: TF-IDF membantu model untuk memahami seberapa penting kata-kata tertentu dalam konteks penulis buku dengan menyeimbangkan frekuensi umum dan khusus suatu kata. Ini memperkuat kontribusi kata-kata unik yang dapat meningkatkan kualitas rekomendasi berdasarkan kesamaan konten antar-buku.
 
-### 6. Data Preparation untuk Model Collaborative Filtering
-   - **Proses**: Melakukan pemetaan kolom `User-ID` dan `ISBN` pada dataframe `df_rating` dengan kolom `user` dan `book_title` menggunakan encoding hasil dari langkah sebelumnya. Kolom rating dikonversi menjadi tipe float, dan dicatat nilai rating minimum dan maksimum.
-   - **Alasan**: Untuk memastikan model dapat mengenali setiap pengguna dan buku dalam bentuk numerik dan dapat memproses rating dengan benar. Dengan memastikan semua data numerik, model collaborative filtering dapat dioptimalkan dalam proses pelatihan dan prediksi.
+### 3. Data Preparation untuk Model Collaborative Filtering
+   #### a. Encoding dengan Label Encoding
+      - **Proses**: Mengonversi data pada kolom `User-ID` dan `ISBN` menjadi nilai numerik unik menggunakan encoding, sehingga setiap `User-ID` dan `ISBN` memiliki representasi numerik yang berbeda.
+      - **Alasan**: Encoding diperlukan agar data dapat diproses oleh model secara efisien. Dengan mengubah kolom ID menjadi numerik, kita dapat menggunakan data ini dalam model collaborative filtering tanpa kendala pada format data non-numerik.
+   #### b. Data Splitting
+      - **Proses**: Memisahkan data menjadi data latih dan data validasi untuk mengevaluasi performa model sebesar 90% data latih dan 10% data validasi.
+      - **Alasan**: Pembagian data ini penting untuk menguji generalisasi model. Dengan membagi data latih dan validasi, kita dapat menilai kemampuan model dalam memberikan rekomendasi pada data yang tidak terlihat sebelumnya, menghindari overfitting, dan memastikan bahwa model dapat bekerja baik pada data baru.
+
 
 ## Modeling
 Sistem rekomendasi ini dibuat untuk memberikan rekomendasi buku kepada pengguna berdasarkan buku yang pernah mereka baca dan beri rating. Pendekatan yang digunakan terdiri dari dua metode utama: **Content-Based Filtering** dan **Collaborative Filtering**. Keduanya memiliki karakteristik dan algoritma yang berbeda, namun bekerja sama untuk memberikan rekomendasi yang optimal dan relevan bagi pengguna.
@@ -138,7 +141,6 @@ Sistem rekomendasi ini dibuat untuk memberikan rekomendasi buku kepada pengguna 
 ### 1. Content-Based Filtering
 
 Content-Based Filtering menggunakan informasi detail buku, seperti nama penulis, sebagai fitur utama untuk memberikan rekomendasi berdasarkan kesamaan antar buku. Dalam implementasinya, dilakukan beberapa tahap:
-- **TF-IDF (Term Frequency-Inverse Document Frequency)**: Teknik ini digunakan untuk menghitung representasi bobot fitur `book_author`. Hasil perhitungan disimpan dalam bentuk matriks TF-IDF, yang berfungsi sebagai representasi vektor penulis buku.
 - **Cosine Similarity**: Menghitung derajat kesamaan antar buku berdasarkan nilai cosine similarity pada matriks TF-IDF. Nilai kesamaan yang lebih tinggi menunjukkan kemiripan yang lebih besar antara dua buku.
 - **Top-N Recommendation**: Algoritma ini menghasilkan daftar rekomendasi buku berdasarkan kesamaan dengan buku yang diberikan.
 
@@ -153,7 +155,6 @@ Content-Based Filtering menggunakan informasi detail buku, seperti nama penulis,
 ### 2. Collaborative Filtering
 
 Pendekatan Collaborative Filtering menggunakan data interaksi pengguna (misalnya, rating) untuk membuat rekomendasi. Proses yang digunakan dalam model ini meliputi:
-- **Data Splitting**: Memisahkan data menjadi data latih dan data validasi untuk mengevaluasi performa model.
 - **Neural Collaborative Filtering (NCF)**: Model rekomendasi berbasis jaringan saraf yang memetakan pengguna dan buku ke dalam ruang embedding untuk memprediksi rating yang belum ada.
 - **Top-N Recommendation**: Berdasarkan skor prediksi tertinggi, model memberikan rekomendasi buku untuk pengguna.
 
