@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-# Prediksi Hujan di Australia
+# Sistem Rekomendasi Buku
 
 ### Latar Belakang
 Dengan banyaknya buku yang tersedia, sering kali sulit bagi pembaca untuk menemukan buku yang sesuai dengan minat mereka. Sistem rekomendasi yang dipersonalisasi dapat menjembatani kesenjangan ini, memandu pembaca ke judul-judul yang sesuai dengan selera mereka, yang pada akhirnya meningkatkan kepuasan dan keterlibatan pengguna. Sistem rekomendasi buku sangat berharga bagi banyak sektor, seperti e-commerce, perpustakaan online, dan platform membaca, di mana saran yang disesuaikan dapat meningkatkan kepuasan pengguna, meningkatkan penjualan, dan menumbuhkan pembaca yang setia.
